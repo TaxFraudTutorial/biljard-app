@@ -1,9 +1,10 @@
 <template>
   <div class="leaderboard">
-    <h2>Player Leaderboard</h2>
+    <h2>< Player Leaderboard ></h2>
     <ul>
       <li v-for="(player, index) in sortedPlayers" :key="player.id">
-        <span class="rank">#{{ index + 1 }}</span>
+        <!-- Apply rank classes for coloring the rank number -->
+        <span :class="getRankClass(index)" class="rank">#{{ index + 1 }}</span>
         <span class="name">{{ player.name }}</span>
         <span class="elo">{{ player.elo }}</span>
       </li>
@@ -25,15 +26,22 @@ export default {
   },
   computed: {
     sortedPlayers() {
-      return [...this.players].sort((a, b) => b.elo - a.elo);
+      return [...this.players].sort((a, b) => b.elo - a.elo); // Sort players based on ELO
+    }
+  },
+  methods: {
+    // Function to return the class for 1st, 2nd, 3rd ranks
+    getRankClass(index) {
+      if (index === 0) return 'gold';  // 1st place
+      if (index === 1) return 'silver';  // 2nd place
+      if (index === 2) return 'bronze';  // 3rd place
+      return '';  // No specific class for others
     }
   }
 };
 </script>
 
 <style scoped>
-
-
 .leaderboard {
   max-width: 400px;
   margin: auto;
@@ -58,7 +66,8 @@ li {
 
 .rank {
   font-weight: bold;
-  color: white;
+  color: white; /* Default color for the rank */
+  margin-right: 5px;  /* Adds space between rank and name */
 }
 
 .name {
@@ -69,5 +78,18 @@ li {
 
 .elo {
   font-weight: bold;
+}
+
+/* Styling for 1st, 2nd, and 3rd places */
+.gold {
+  color: gold;
+}
+
+.silver {
+  color: silver;
+}
+
+.bronze {
+  color: #cd7f32;  /* Bronze color */
 }
 </style>
